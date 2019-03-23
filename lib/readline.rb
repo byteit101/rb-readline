@@ -34,12 +34,12 @@ module Readline
   #    loop{ Readline.readline('> ') }
   #
   def readline(prompt = "", add_history = nil)
-    if $stdin.closed?
+    RbReadline.rl_instream = $stdin if RbReadline.rl_instream.nil?
+    RbReadline.rl_outstream = $stdout if RbReadline.rl_outstream.nil?
+
+    if RbReadline.rl_instream.closed?
       raise IOError, "stdin closed"
     end
-
-    RbReadline.rl_instream = $stdin
-    RbReadline.rl_outstream = $stdout
 
     begin
       buff = RbReadline.readline(prompt)
